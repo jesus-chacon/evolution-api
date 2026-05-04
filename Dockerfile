@@ -3,9 +3,7 @@ FROM node:24-alpine AS builder
 RUN apk update && \
     apk add --no-cache git ffmpeg wget curl bash openssl
 
-LABEL version="2.3.1" description="Api to control whatsapp features through http requests." 
-LABEL maintainer="Davidson Gomes" git="https://github.com/DavidsonGomes"
-LABEL contact="contato@evolution-api.com"
+LABEL version="2.4.0" description="Api to control whatsapp features through http requests." 
 
 WORKDIR /evolution
 
@@ -14,7 +12,9 @@ COPY ./tsconfig.json ./
 COPY ./tsup.config.ts ./
 COPY ./patches ./patches
 
-RUN npm ci --silent
+RUN npm install -g npm@latest
+
+RUN npm ci
 
 RUN npx patch-package
 

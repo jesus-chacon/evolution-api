@@ -85,8 +85,8 @@ async function bootstrap() {
   app.use('/store', express.static(join(ROOT_DIR, 'store')));
 
   // Licensing — public routes (always work) and gate middleware (blocks rest).
-  app.use('/license', buildLicenseRouter(licensingRC));
-  app.use(gateMiddleware(licensingRC));
+  //app.use('/license', buildLicenseRouter(licensingRC));
+  //app.use(gateMiddleware(licensingRC));
 
   app.use('/', router);
 

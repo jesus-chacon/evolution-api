@@ -47,8 +47,10 @@ services:
 
   evolution-postgres:
     container_name: evolution_postgres
-    image: postgres:15
+    image: postgres:latest
     restart: always
+    ports:
+      - "5432"
     env_file:
       - .env
     command:
@@ -63,10 +65,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - evolution-net
-    expose:
-      - "5432"
 
 volumes:
   evolution_instances:
