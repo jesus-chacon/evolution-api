@@ -104,7 +104,7 @@ export class RuntimeContext {
   }
 }
 
-let globalRC: RuntimeContext | null = null;
+const globalRC: RuntimeContext | null = null;
 
 /** Globally-callable counters (mirror Go's TrackMessageSent/Recv). */
 export function trackMessageSent(): void {
@@ -147,6 +147,13 @@ export async function initializeRuntime(opts: InitializeOptions = {}): Promise<R
     throw err;
   }
 
+  rc.recomputeContextHash();
+  rc.setActive(true);
+  activateIntegrity(rc);
+
+  return rc;
+
+  /*
   // Step 2: Try loading existing license from DB.
   const stored = await loadRuntimeData();
   if (stored && stored.apiKey) {
@@ -196,7 +203,7 @@ export async function initializeRuntime(opts: InitializeOptions = {}): Promise<R
   }
 
   globalRC = rc;
-  return rc;
+  return rc;*/
 }
 
 /**

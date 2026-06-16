@@ -12,6 +12,7 @@ let runtimeSalt: Buffer = Buffer.from([0]);
 
 export function activateIntegrity(rc: RuntimeContext): void {
   if (!rc) return;
+
   runtimeSalt = createHash('sha256')
     .update(rc.apiKey + rc.instanceId + 'ev0')
     .digest();

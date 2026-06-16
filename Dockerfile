@@ -7,16 +7,18 @@ LABEL version="2.4.0" description="Api to control whatsapp features through http
 
 WORKDIR /evolution
 
-COPY ./package*.json ./
+COPY ./package.json ./
+COPY ./pnpm-lock.yaml ./
+COPY ./pnpm-workspace.yaml ./
+COPY ./.npmrc ./
 COPY ./tsconfig.json ./
 COPY ./tsup.config.ts ./
 COPY ./patches ./patches
+COPY ./pnpm-patches ./pnpm-patches
 
-RUN npm install -g npm@latest
+RUN corepack enable && corepack prepare pnpm@11.2.2 --activate
 
-RUN npm ci
-
-RUN npx patch-package
+RUN pnpm install --frozen-lockfile
 
 COPY ./src ./src
 COPY ./public ./public
@@ -41,12 +43,14 @@ ARG LICENSE_ENDPOINT_XOR_KEY
 ENV LICENSE_ENDPOINT_ENCODED=${LICENSE_ENDPOINT_ENCODED}
 ENV LICENSE_ENDPOINT_XOR_KEY=${LICENSE_ENDPOINT_XOR_KEY}
 
-RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
+RUN NODE_OPTIONS="--max-old-space-size=2048" pnpm run build
 
 FROM node:24-alpine AS final
 
 RUN apk update && \
     apk add tzdata ffmpeg bash openssl
+
+RUN corepack enable && corepack prepare pnpm@11.2.2 --activate
 
 ENV TZ=America/Sao_Paulo
 ENV DOCKER_ENV=true
@@ -54,7 +58,9 @@ ENV DOCKER_ENV=true
 WORKDIR /evolution
 
 COPY --from=builder /evolution/package.json ./package.json
-COPY --from=builder /evolution/package-lock.json ./package-lock.json
+COPY --from=builder /evolution/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /evolution/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=builder /evolution/.npmrc ./.npmrc
 
 COPY --from=builder /evolution/node_modules ./node_modules
 COPY --from=builder /evolution/dist ./dist
@@ -70,4 +76,4 @@ ENV DOCKER_ENV=true
 
 EXPOSE 8080
 
-ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && npm run start:prod" ]
+ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && pnpm run start:prod" ]

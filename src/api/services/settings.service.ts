@@ -10,6 +10,7 @@ export class SettingsService {
   private readonly logger = new Logger('SettingsService');
 
   public async create(instance: InstanceDto, data: SettingsDto) {
+    console.log(instance);
     await this.waMonitor.waInstances[instance.instanceName].setSettings(data);
 
     return { settings: { ...instance, settings: data } };

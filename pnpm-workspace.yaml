@@ -1,0 +1,23 @@
+patchedDependencies:
+  whatsapp-rust-bridge@*: pnpm-patches/whatsapp-rust-bridge@0.5.3.patch
+
+nodeLinker: hoisted
+
+blockExoticSubdeps: false
+
+minimumReleaseAgeExclude:
+  - "@aws-sdk/client-sqs@3.1051.0"
+  - baileys@7.0.0-rc12
+
+allowBuilds:
+  "@ffmpeg-installer/darwin-arm64": true
+  "@ffmpeg-installer/linux-arm64": true
+  "@ffmpeg-installer/linux-x64": true
+  "@prisma/client": true
+  "@prisma/engines": true
+  "@scarf/scarf": true
+  baileys: true
+  esbuild: true
+  prisma: true
+  protobufjs: true
+  sharp: true

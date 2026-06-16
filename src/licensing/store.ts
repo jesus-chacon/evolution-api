@@ -67,11 +67,14 @@ export async function removeRuntimeData(): Promise<void> {
 
 export async function loadOrCreateInstanceID(): Promise<string> {
   const existing = await getConfig(ConfigKey.InstanceID);
+
   if (existing && existing.length === 36) return existing;
 
   // Generate hardware-based instance ID (hostname + primary MAC).
   const id = generateHardwareID() || randomUUID();
+
   await setConfig(ConfigKey.InstanceID, id);
+
   return id;
 }
 
