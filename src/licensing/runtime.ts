@@ -14,7 +14,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { activateIntegrity } from './integrity';
 import { RegisterExchangeResponse, RuntimeContextSnapshot } from './model';
-import { loadOrCreateInstanceID, loadRuntimeData, saveRuntimeData } from './store';
+import { loadOrCreateInstanceID, /*loadRuntimeData,*/ saveRuntimeData } from './store';
 import { postSigned, postUnsigned, readErrorMessage } from './transport';
 
 const logger = new Logger('Licensing');
@@ -214,6 +214,7 @@ export async function initializeRuntime(opts: InitializeOptions = {}): Promise<R
  * Returns true on success. Returns false on any failure — the caller is expected
  * to fall back to the manual flow. Non-fatal best-effort path.
  */
+/*
 async function tryAutoRegisterFromEnv(rc: RuntimeContext): Promise<boolean> {
   const email = (process.env.EVOLUTION_OPERATOR_EMAIL ?? '').trim();
   if (!email) return false;
@@ -275,7 +276,8 @@ async function tryAutoRegisterFromEnv(rc: RuntimeContext): Promise<boolean> {
   activateIntegrity(rc);
   return true;
 }
-
+*/
+/*
 function printRegistrationBanner(rc?: RuntimeContext): void {
   logger.warn('╔══════════════════════════════════════════════════════════╗');
   logger.warn('║              License Registration Required               ║');
@@ -292,6 +294,7 @@ function printRegistrationBanner(rc?: RuntimeContext): void {
     logger.warn(`Instance ID: ${rc.instanceId}`);
   }
 }
+*/
 
 function maskKey(key: string): string {
   if (key.length < 12) return '***';
