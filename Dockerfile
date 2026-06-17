@@ -13,6 +13,7 @@ COPY ./pnpm-workspace.yaml ./
 COPY ./.npmrc ./
 COPY ./tsconfig.json ./
 COPY ./tsup.config.ts ./
+COPY ./prisma.config.ts ./
 COPY ./patches ./patches
 COPY ./pnpm-patches ./pnpm-patches
 
@@ -71,6 +72,7 @@ COPY --from=builder /evolution/.env ./.env
 COPY --from=builder /evolution/Docker ./Docker
 COPY --from=builder /evolution/runWithProvider.js ./runWithProvider.js
 COPY --from=builder /evolution/tsup.config.ts ./tsup.config.ts
+COPY --from=builder /evolution/prisma.config.ts ./prisma.config.ts
 
 ENV DOCKER_ENV=true
 

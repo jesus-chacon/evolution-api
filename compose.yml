@@ -13,21 +13,19 @@ services:
       - ./data/api:/evolution/instances
     env_file:
       - .env
-    expose:
-      - 8080
+#    expose:
+#      - 8080
 
   redis:
     container_name: redis_evo
     image: redis:latest
-    restart: always
     networks:
       - internal
-    command: >
-      redis-server --port 6379 --appendonly yes --replicaof no one --maxmemory-policy noeviction
-    ports:
-     - 6379:6379
+    command: redis-server /usr/local/etc/redis/redis.conf
+    #ports:
+     #- 6379:6379
     volumes:
       - ./data/redis:/data
-
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
 networks:
   internal:

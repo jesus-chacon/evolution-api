@@ -1,4 +1,3 @@
-
 allowBuilds:
   "@ffmpeg-installer/darwin-arm64": true
   "@ffmpeg-installer/linux-arm64": true
@@ -18,6 +17,8 @@ blockExoticSubdeps: false
 minimumReleaseAgeExclude:
   - "@aws-sdk/client-sqs@3.1051.0"
   - baileys@7.0.0-rc12
+
+minimumReleaseAge: 1440
 
 nodeLinker: hoisted
 patchedDependencies:
