@@ -19,14 +19,18 @@ const PROTECTED_INSTANCE_FIELDS = ['instanceName', 'instanceId'] as const;
 
 function sanitizeUntrustedInput(source: Record<string, any> | undefined): Record<string, any> {
   if (!source || typeof source !== 'object') return {};
+
   const sanitized: Record<string, any> = {};
+
   for (const [key, value] of Object.entries(source)) {
     if ((PROTECTED_INSTANCE_FIELDS as readonly string[]).includes(key)) {
       logger.warn(`Ignoring attempt to override protected field "${key}" via untrusted input`);
       continue;
     }
+
     sanitized[key] = value;
   }
+
   return sanitized;
 }
 

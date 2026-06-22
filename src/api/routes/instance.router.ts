@@ -57,12 +57,14 @@ export class InstanceRouter extends RouterBroker {
       .get(this.routerPath('fetchInstances', false), ...guards, async (req, res) => {
         const key = req.get('apikey');
 
-        const response = await this.dataValidate<InstanceDto>({
-          request: req,
-          schema: null,
-          ClassRef: InstanceDto,
-          execute: (instance) => instanceController.fetchInstances(instance, key),
+        const queryValue = (value: unknown) => (typeof value === 'string' ? value : undefined);
+        const instance = Object.assign(new InstanceDto(), req.params, {
+          instanceId: queryValue(req.query.instanceId),
+          instanceName: queryValue(req.query.instanceName),
+          number: queryValue(req.query.number),
         });
+
+        const response = await instanceController.fetchInstances(instance, key);
 
         return res.status(HttpStatus.OK).json(response);
       })
